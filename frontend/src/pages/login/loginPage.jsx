@@ -1,15 +1,46 @@
-import React, { useRef, useEffect } from 'react';
+import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
+import { useFormik } from 'formik';
 import {
   Container, Row, Col, Card, Form, Button, FloatingLabel,
 } from 'react-bootstrap';
-import { useFormik } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/index';
+import routes from '../../routes';
 import loginImg from './loginImg.jpeg';
 
 function LoginPage() {
+  const [error, setError] = useState('');
+  const [authFailed, setAuthFailed] = useState(false);
+
+  const auth = useAuth();
+  // const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleOnSubmit = async (values) => {
+    setError('');
+    try {
+      const response = await axios.post(routes.loginPath(), values);
+      const obj = {};
+      obj.token = response.data.token;
+      localStorage.setItem('userId', JSON.stringify(obj));
+      auth.logIn();
+      navigate('/');
+    } catch (e) {
+      console.log(e);
+      setAuthFailed(true);
+      setError(e);
+      console.log(error);
+    }
+  };
+
   const f = useFormik({
     initialValues: {
       username: '',
       password: '',
+    },
+    onSubmit: (values) => {
+      handleOnSubmit(values);
     },
   });
 
@@ -39,6 +70,7 @@ function LoginPage() {
                     ref={inputRef}
                     onChange={f.handleChange}
                     value={f.values.username}
+                    isInvalid={authFailed}
                     required
                   />
                 </FloatingLabel>
@@ -51,8 +83,10 @@ function LoginPage() {
                     placeholder="Пароль"
                     onChange={f.handleChange}
                     value={f.values.password}
+                    isInvalid={authFailed}
                     required
                   />
+                  <Form.Control.Feedback type="invalid">Неправильно указан логин и/или пароль</Form.Control.Feedback>
                 </FloatingLabel>
                 <Button type="submit" className="w-100 mb-3" variant="outline-primary">
                   Войти
