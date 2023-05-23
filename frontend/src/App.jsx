@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { Provider } from 'react-redux';
 import {
   BrowserRouter,
   Routes,
@@ -7,9 +8,10 @@ import {
   useLocation,
   Link,
 } from 'react-router-dom';
-import { Navbar, Container } from 'react-bootstrap';
+import { Navbar, Container, Button } from 'react-bootstrap';
 import './App.css';
 
+import store from './slices/store';
 import NotFoundPage from './pages/notFound/NotFoundPage';
 import HomePage from './pages/home/HomePage';
 import LoginPage from './pages/login/LoginPage';
@@ -43,41 +45,52 @@ function PrivateRoute({ children }) {
   );
 }
 
+function AuthButton() {
+  const auth = useAuth();
+
+  return (
+    auth.loggedIn
+      ? <Button type="button" className="btn btn-primary" onClick={auth.logOut}>Выйти</Button>
+      : null
+  );
+}
+
 function App() {
   return (
-    <AuthProvider>
+    <Provider store={store}>
       <BrowserRouter>
-        <div className="h-100 bg-light">
-          <div className="h-100">
-            <div className="h-100" id="chat">
-              <div className="d-flex flex-column h-100">
-                <Navbar expand="lg" bg="white" className="shadow-sm">
-                  <Container>
-                    <Link to="/" className="custom-link">
-                      <Navbar.Brand>
+        <AuthProvider>
+          <div className="vh-100 bg-light">
+            <div className="h-100">
+              <div className="h-100" id="chat">
+                <div className="d-flex flex-column h-100">
+                  <Navbar expand="lg" bg="white" className="shadow-sm">
+                    <Container>
+                      <Navbar.Brand as={Link} to="/" className="custom-link">
                         Hexlet Chat
                       </Navbar.Brand>
-                    </Link>
-                  </Container>
-                </Navbar>
-                <Routes>
-                  <Route
-                    path="/"
-                    element={(
-                      <PrivateRoute>
-                        <HomePage />
-                      </PrivateRoute>
+                      <AuthButton />
+                    </Container>
+                  </Navbar>
+                  <Routes>
+                    <Route
+                      path="/"
+                      element={(
+                        <PrivateRoute>
+                          <HomePage />
+                        </PrivateRoute>
                     )}
-                  />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/*" element={<NotFoundPage />} />
-                </Routes>
+                    />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/*" element={<NotFoundPage />} />
+                  </Routes>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </AuthProvider>
       </BrowserRouter>
-    </AuthProvider>
+    </Provider>
   );
 }
 
