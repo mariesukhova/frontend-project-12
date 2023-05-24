@@ -9,12 +9,11 @@ import useAuth from '../../hooks/index';
 import routes from '../../routes';
 import loginImg from './loginImg.jpeg';
 
-function LoginPage() {
+export default function LoginPage() {
   const [error, setError] = useState('');
   const [authFailed, setAuthFailed] = useState(false);
 
   const auth = useAuth();
-  // const location = useLocation();
   const navigate = useNavigate();
 
   const handleOnSubmit = async (values) => {
@@ -23,11 +22,12 @@ function LoginPage() {
       const response = await axios.post(routes.loginPath(), values);
       const obj = {};
       obj.token = response.data.token;
+      obj.username = response.data.username;
       localStorage.setItem('userId', JSON.stringify(obj));
       auth.logIn();
       navigate('/');
+      console.log(localStorage);
     } catch (e) {
-      console.log(e);
       setAuthFailed(true);
       setError(e);
       console.log(error);
@@ -106,5 +106,3 @@ function LoginPage() {
     </Container>
   );
 }
-
-export default LoginPage;
