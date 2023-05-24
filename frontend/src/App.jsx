@@ -10,16 +10,34 @@ import {
 } from 'react-router-dom';
 import { Navbar, Container, Button } from 'react-bootstrap';
 import './App.css';
+import { io } from 'socket.io-client';
 
 import store from './slices/store';
 import NotFoundPage from './pages/notFound/NotFoundPage';
 import HomePage from './pages/home/HomePage';
-import LoginPage from './pages/login/LoginPage';
+import LoginPage from './pages/login/NewLoginPage';
 import AuthContext from './contexts/index';
 import useAuth from './hooks/index';
+import { addMessage } from './slices/messagesSlice';
+
+const socket = io();
+socket
+  .on('connect_error', () => {
+    console.log('socket "connect_error"');
+  })
+  .on('connection', () => {
+    console.log('new connection!');
+  })
+  .on('disconnect', (reason) => {
+    console.log(`socket "disconnect" (${reason})`);
+  })
+  .on('newMessage', (data) => {
+    store.dispatch(addMessage(data));
+  });
 
 function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('userId') ?? false);
+  const userData = JSON.parse(localStorage.getItem('userId'));
 
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
@@ -27,7 +45,9 @@ function AuthProvider({ children }) {
     setLoggedIn(false);
   };
 
-  const memo = useMemo(() => ({ loggedIn, logIn, logOut }));
+  const memo = useMemo(() => ({
+    loggedIn, logIn, logOut, userData, socket,
+  }));
 
   return (
     <AuthContext.Provider value={memo}>
