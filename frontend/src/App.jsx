@@ -19,6 +19,7 @@ import LoginPage from './pages/login/NewLoginPage';
 import AuthContext from './contexts/index';
 import useAuth from './hooks/index';
 import { addMessage } from './slices/messagesSlice';
+import { addChannel, renameChannel, removeChannel } from './slices/channelsSlice';
 
 const socket = io();
 socket
@@ -33,6 +34,15 @@ socket
   })
   .on('newMessage', (data) => {
     store.dispatch(addMessage(data));
+  })
+  .on('newChannel', (data) => {
+    store.dispatch(addChannel(data));
+  })
+  .on('renameChannel', (data) => {
+    store.dispatch(renameChannel(data));
+  })
+  .on('removeChannel', (data) => {
+    store.dispatch(removeChannel(data));
   });
 
 function AuthProvider({ children }) {
