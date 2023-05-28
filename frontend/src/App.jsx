@@ -16,6 +16,7 @@ import store from './slices/store';
 import NotFoundPage from './pages/notFound/NotFoundPage';
 import HomePage from './pages/home/HomePage';
 import LoginPage from './pages/login/NewLoginPage';
+import SignupPage from './pages/signup/SignupPage';
 import AuthContext from './contexts/index';
 import useAuth from './hooks/index';
 import { addMessage } from './slices/messagesSlice';
@@ -112,6 +113,7 @@ function App() {
                     )}
                     />
                     <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignupPage />} />
                     <Route path="/*" element={<NotFoundPage />} />
                   </Routes>
                 </div>
