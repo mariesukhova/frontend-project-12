@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import {
   Container, Row, Col, Card, Form, Button, FloatingLabel,
 } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import useAuth from '../../hooks/index';
 import routes from '../../routes';
 import loginImg from './loginImg.jpeg';
@@ -26,11 +27,9 @@ export default function LoginPage() {
       localStorage.setItem('userId', JSON.stringify(obj));
       auth.logIn();
       navigate('/');
-      console.log(localStorage);
     } catch (e) {
       setAuthFailed(true);
       setError(e);
-      console.log(error);
     }
   };
 
@@ -97,7 +96,7 @@ export default function LoginPage() {
               <div className="text-center">
                 <span>Нет аккаунта?</span>
                 {' '}
-                <a href="/signup">Регистрация</a>
+                <Link to="/signup">Регистрация</Link>
               </div>
             </Card.Footer>
           </Card>
