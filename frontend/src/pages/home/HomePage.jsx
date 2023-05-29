@@ -34,6 +34,7 @@ function HomePage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   filter.loadDictionary('ru');
+  filter.loadDictionary('en');
   const { channels, currentChannelId } = useSelector((state) => state.channelsReducer);
   const { messages } = useSelector((state) => state.messagesReducer);
   const {
@@ -79,8 +80,9 @@ function HomePage() {
               {channel.name}
             </Button>
 
-            <Dropdown.Toggle split variant={channel.id === currentChannelId ? 'secondary' : null} id="dropdown-split-basic" />
-
+            <Dropdown.Toggle split variant={channel.id === currentChannelId ? 'secondary' : null} id="dropdown-split-basic">
+              <span className="visually-hidden">Управление каналом</span>
+            </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item onClick={() => handleRemoveClick(channel)}>{t('Remove channel')}</Dropdown.Item>
               <Dropdown.Item onClick={() => handleRenameClick(channel)}>
