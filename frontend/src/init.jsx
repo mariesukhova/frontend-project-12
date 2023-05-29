@@ -1,6 +1,7 @@
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import i18next from 'i18next';
 import React from 'react';
+import { Provider, ErrorBoundary } from '@rollbar/react'; // Provider imports 'rollbar'
 import App from './App';
 import ru from './locales/ru';
 
@@ -16,9 +17,18 @@ const runApp = async () => {
       },
     });
 
+  const rollbarConfig = {
+    accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
+    environment: 'production',
+  };
+
   return (
     <I18nextProvider i18n={i18n}>
-      <App />
+      <Provider config={rollbarConfig}>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
+      </Provider>
     </I18nextProvider>
   );
 };
