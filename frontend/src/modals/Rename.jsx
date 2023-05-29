@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import {
   Modal, FormGroup, Form, Button,
@@ -38,6 +39,16 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
         removable: true,
       });
       onClose();
+      toast.success(t('Channel renamed!'), {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
     },
   });
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, {
   useEffect, useState, useRef, useContext,
 } from 'react';
@@ -8,6 +9,7 @@ import {
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
+import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import routes from '../../routes';
 import { setMessages } from '../../slices/messagesSlice';
@@ -124,8 +126,17 @@ function HomePage() {
         dispatch(setMessages(data.messages));
         dispatch(setCurrentChannelId(1));
       } catch {
-        setError('Ошибка при получении данных');
-        console.log(error);
+        setError(t('Connection error'));
+        toast.error(t('Connection error'), {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
       }
     };
 
@@ -167,6 +178,19 @@ function HomePage() {
   return (
     <>
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          type="success"
+        />
         <Row className="h-100 overflow-hidden bg-white flex-md-row">
           <Col xs={4} md={2} className="border-end px-0 bg-light flex-column h-100 d-flex">
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
