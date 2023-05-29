@@ -7,6 +7,7 @@ import {
   Container, Row, Col, Button, Nav, Form, Dropdown, ButtonGroup,
 } from 'react-bootstrap';
 import { useFormik } from 'formik';
+import filter from 'leo-profanity';
 import { useTranslation } from 'react-i18next';
 import _ from 'lodash';
 import { ToastContainer, toast } from 'react-toastify';
@@ -32,6 +33,7 @@ const getAuthHeader = () => {
 function HomePage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  filter.loadDictionary('ru');
   const { channels, currentChannelId } = useSelector((state) => state.channelsReducer);
   const { messages } = useSelector((state) => state.messagesReducer);
   const {
@@ -80,10 +82,10 @@ function HomePage() {
             <Dropdown.Toggle split variant={channel.id === currentChannelId ? 'secondary' : null} id="dropdown-split-basic" />
 
             <Dropdown.Menu>
+              <Dropdown.Item onClick={() => handleRemoveClick(channel)}>{t('Remove channel')}</Dropdown.Item>
               <Dropdown.Item onClick={() => handleRenameClick(channel)}>
-                Переименовать
+                {t('Rename channel')}
               </Dropdown.Item>
-              <Dropdown.Item onClick={() => handleRemoveClick(channel)}>Удалить</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         )
@@ -111,7 +113,7 @@ function HomePage() {
       message: '',
     },
     onSubmit: (values, { resetForm }) => {
-      socket.emit('newMessage', { message: values.message, channelId: currentChannelId, author: userData.username });
+      socket.emit('newMessage', { message: filter.clean(values.message), channelId: currentChannelId, author: userData.username });
       resetForm();
     },
   });
