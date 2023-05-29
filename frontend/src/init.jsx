@@ -18,8 +18,8 @@ const runApp = async () => {
     });
 
   const rollbarConfig = {
-    accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
-    environment: 'production',
+    accessToken: '232722dad74c45de84eab0979b11707b',
+    environment: 'testenv',
   };
 
   return (
