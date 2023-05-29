@@ -11,7 +11,7 @@ import useAuth from '../../hooks/index';
 import routes from '../../routes';
 import loginImg from './loginImg.jpeg';
 
-export default function LoginPage() {
+const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const { t } = useTranslation();
 
@@ -112,4 +112,6 @@ export default function LoginPage() {
       </Row>
     </Container>
   );
-}
+};
+
+export default LoginPage;

@@ -31,7 +31,7 @@ test.describe('registration', () => {
     await page.locator('text=/^Пароль$/').first().type('pass');
     await page.locator('text=Подтвердите пароль').first().type('passw');
     await page.locator('button[type="submit"]').first().click();
-    await page.pause()
+    await page.pause();
     await expect(await page.locator('text=От 3 до 20 символов')).toHaveCount(1);
     await expect(await page.locator('text=Не менее 6 символов')).toHaveCount(1);
     await expect(

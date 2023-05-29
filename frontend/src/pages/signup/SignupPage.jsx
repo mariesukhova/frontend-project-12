@@ -12,7 +12,7 @@ import useAuth from '../../hooks/index';
 import routes from '../../routes';
 import signupImg from './signupImg.jpg';
 
-export default function SingupPage() {
+const SingupPage = () => {
   const { t } = useTranslation();
   const [error, setError] = useState('');
 
@@ -173,4 +173,6 @@ export default function SingupPage() {
       </Row>
     </Container>
   );
-}
+};
+
+export default SingupPage;

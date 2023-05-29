@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 import { object, string } from 'yup';
 
-function Rename({ onClose, onChildFormSubmit, channelInfo }) {
+const Rename = ({ onClose, onChildFormSubmit, channelInfo }) => {
   const { t } = useTranslation();
   const { channels } = useSelector((state) => state.channelsReducer);
   const channelNames = channels.map((channel) => channel.name);
@@ -97,6 +97,6 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default Rename;

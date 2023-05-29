@@ -5,7 +5,7 @@ import {
   Modal, Button,
 } from 'react-bootstrap';
 
-function Rename({ onClose, onChildFormSubmit, channelInfo }) {
+const Rename = ({ onClose, onChildFormSubmit, channelInfo }) => {
   const { t } = useTranslation();
   const ref = useRef();
 
@@ -54,6 +54,6 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default Rename;

@@ -32,7 +32,7 @@ const getAuthHeader = () => {
 filter.loadDictionary('ru');
 filter.loadDictionary('en');
 
-function HomePage() {
+const HomePage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { channels, currentChannelId } = useSelector((state) => state.channelsReducer);
@@ -252,6 +252,6 @@ function HomePage() {
       {isRemoveOpen ? <Remove onChildFormSubmit={handleRemoveModalSubmit} onClose={() => handleCloseModal('remove')} channelInfo={modalInfo} /> : null}
     </>
   );
-}
+};
 
 export default HomePage;
