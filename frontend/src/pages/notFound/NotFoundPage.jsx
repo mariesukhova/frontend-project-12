@@ -1,20 +1,22 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Container, Row, Col, Image,
 } from 'react-bootstrap';
 import notFoundImg from './notFoundImg.svg';
 
 function NotFoundPage() {
+  const { t } = useTranslation();
   return (
     <Container>
       <Row className="justify-content-center">
         <Col className="text-center">
           <Image alt="Страница не найдена" fluid className="h-25" src={notFoundImg} />
-          <h1 className="h4 text-muted">Страница не найдена</h1>
+          <h1 className="h4 text-muted">{t('Page not found')}</h1>
           <p className="text-muted">
-            Но вы можете перейти
+            {t('But you can go ')}
             {' '}
-            <a href="/">на главную страницу</a>
+            <a href="/">{t('to the main page')}</a>
           </p>
         </Col>
       </Row>

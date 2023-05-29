@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Provider } from 'react-redux';
 import {
   BrowserRouter,
@@ -78,10 +79,11 @@ function PrivateRoute({ children }) {
 
 function AuthButton() {
   const auth = useAuth();
+  const { t } = useTranslation();
 
   return (
     auth.loggedIn
-      ? <Button type="button" className="btn btn-primary" onClick={auth.logOut}>Выйти</Button>
+      ? <Button type="button" className="btn btn-primary" onClick={auth.logOut}>{t('Logout')}</Button>
       : null
   );
 }

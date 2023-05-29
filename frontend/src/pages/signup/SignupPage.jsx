@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import {
@@ -12,6 +13,7 @@ import routes from '../../routes';
 import signupImg from './signupImg.jpg';
 
 export default function SingupPage() {
+  const { t } = useTranslation();
   const [error, setError] = useState('');
   const [authFailed, setAuthFailed] = useState(false);
 
@@ -31,24 +33,24 @@ export default function SingupPage() {
     } catch (e) {
       setAuthFailed(true);
       if (e.response.data.statusCode === 409) {
-        setError('Такой пользователь уже существует');
+        setError(t('This user already exists'));
       } else {
-        setError('Ошибка сети');
+        setError(t('Connection error'));
       }
     }
   };
 
   const validationSchema = Yup.object({
     username: Yup.string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле'),
+      .min(3, t('From 3 to 20 characters'))
+      .max(20, t('From 3 to 20 characters'))
+      .required(t('Required field')),
     password: Yup.string()
-      .min(6, 'От 6 символов')
-      .required('Обязательное поле'),
+      .min(6, t('At least 6 characters'))
+      .required(t('Required field')),
     passwordConfirmation: Yup.string()
-      .required('Обязательное поле')
-      .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать'),
+      .required(t('Required field'))
+      .oneOf([Yup.ref('password'), null], t('Passwords must match')),
   });
 
   const f = useFormik({
@@ -82,14 +84,14 @@ export default function SingupPage() {
                 <img src={signupImg} className="rounded-circle" alt="Регистрация" />
               </div>
               <Form className="w-50" onSubmit={f.handleSubmit}>
-                <h1 className="text-center mb-4">Регистрация</h1>
-                <FloatingLabel htmlFor="username" label="Имя пользователя" className="mb-4">
+                <h1 className="text-center mb-4">{t('Registration')}</h1>
+                <FloatingLabel htmlFor="username" label={t('Username')} className="mb-4">
                   <Form.Control
                     name="username"
                     autoComplete="username"
                     type="text"
                     id="username"
-                    placeholder="Ваш ник"
+                    placeholder={t('Username')}
                     ref={inputRef}
                     onChange={f.handleChange}
                     value={f.values.username}
@@ -97,44 +99,44 @@ export default function SingupPage() {
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    { f.errors.username }
+                    {t(f.errors.username)}
                   </Form.Control.Feedback>
                 </FloatingLabel>
-                <FloatingLabel htmlFor="password" label="Пароль" className="mb-4">
+                <FloatingLabel htmlFor="password" label={t('Password')} className="mb-4">
                   <Form.Control
                     name="password"
                     autoComplete="password"
                     type="password"
                     id="password"
-                    placeholder="Пароль"
+                    placeholder={t('Password')}
                     onChange={f.handleChange}
                     value={f.values.password}
                     isInvalid={f.errors.password || error}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    { f.errors.password }
+                    {t(f.errors.password)}
                   </Form.Control.Feedback>
                 </FloatingLabel>
-                <FloatingLabel htmlFor="passwordConfirmation" label="Подтвердите пароль" className="mb-4">
+                <FloatingLabel htmlFor="passwordConfirmation" label={t('Confirm password')} className="mb-4">
                   <Form.Control
                     name="passwordConfirmation"
                     autoComplete="passwordConfirmation"
                     type="password"
                     id="passwordConfirmation"
-                    placeholder="Подтвердите пароль"
+                    placeholder={t('Confirm password')}
                     onChange={f.handleChange}
                     value={f.values.passwordConfirmation}
                     isInvalid={f.errors.passwordConfirmation || error}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
-                    { f.errors.passwordConfirmation }
+                    {t(f.errors.passwordConfirmation)}
                   </Form.Control.Feedback>
                 </FloatingLabel>
                 { error ? <p className="text-danger">{error}</p> : null}
                 <Button type="submit" className="w-100 mb-3" variant="outline-primary">
-                  Зарегистрироваться
+                  {t('Register')}
                 </Button>
               </Form>
             </Card.Body>
