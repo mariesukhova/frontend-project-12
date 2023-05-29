@@ -51,15 +51,16 @@ function AuthProvider({ children }) {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('userId') ?? false);
   const userData = JSON.parse(localStorage.getItem('userId'));
 
-  const logIn = () => setLoggedIn(true);
-  const logOut = () => {
-    localStorage.removeItem('userId');
-    setLoggedIn(false);
-  };
-
-  const memo = useMemo(() => ({
-    loggedIn, logIn, logOut, userData, socket,
-  }));
+  const memo = useMemo(() => {
+    const logIn = () => setLoggedIn(true);
+    const logOut = () => {
+      localStorage.removeItem('userId');
+      setLoggedIn(false);
+    };
+    return ({
+      loggedIn, logIn, logOut, userData, socket,
+    });
+  }, [loggedIn, userData]);
 
   return (
     <AuthContext.Provider value={memo}>

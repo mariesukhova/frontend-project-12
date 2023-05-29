@@ -63,7 +63,7 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [onClose]);
 
   return (
     <Modal show>

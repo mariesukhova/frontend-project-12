@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import {
@@ -7,7 +7,9 @@ import {
 
 function Rename({ onClose, onChildFormSubmit, channelInfo }) {
   const { t } = useTranslation();
-  const handleSubmit = () => {
+  const ref = useRef();
+
+  const handleSubmit = useCallback(() => {
     onChildFormSubmit(channelInfo);
     onClose();
     toast.success(t('Channel removed!'), {
@@ -20,9 +22,8 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
       progress: undefined,
       theme: 'light',
     });
-  };
+  }, [channelInfo, onChildFormSubmit, onClose, t]);
 
-  const ref = useRef();
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Enter') {
@@ -36,7 +37,7 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [handleSubmit, onClose]);
 
   return (
     <Modal show>

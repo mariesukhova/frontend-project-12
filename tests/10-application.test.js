@@ -1,6 +1,3 @@
-// @ts-check
-/* eslint-disable no-useless-escape */
-
 import { test, expect } from '@playwright/test';
 
 const user = {

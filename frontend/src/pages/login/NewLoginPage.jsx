@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
@@ -13,7 +12,6 @@ import routes from '../../routes';
 import loginImg from './loginImg.jpeg';
 
 export default function LoginPage() {
-  const [error, setError] = useState('');
   const [authFailed, setAuthFailed] = useState(false);
   const { t } = useTranslation();
 
@@ -21,7 +19,6 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   const handleOnSubmit = async (values) => {
-    setError('');
     try {
       const response = await axios.post(routes.loginPath(), values);
       const obj = {};
@@ -32,7 +29,6 @@ export default function LoginPage() {
       navigate('/');
     } catch (e) {
       setAuthFailed(true);
-      setError(e);
       toast.error(t('Connection error'), {
         position: 'top-right',
         autoClose: 5000,

@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -14,6 +13,7 @@ const channelsSlice = createSlice({
     setCurrentChannelId: (state, { payload }) => ({ ...state, currentChannelId: payload }),
     addChannel: (state, { payload }) => {
       state.channels.push(payload);
+      // eslint-disable-next-line no-param-reassign
       state.currentChannelId = payload.id;
     },
     renameChannel: (state, { payload }) => {

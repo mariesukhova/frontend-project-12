@@ -65,7 +65,7 @@ function Add({ onClose, onChildFormSubmit }) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [onClose]);
 
   return (
     <Modal show>

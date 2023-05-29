@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -16,7 +15,6 @@ import signupImg from './signupImg.jpg';
 export default function SingupPage() {
   const { t } = useTranslation();
   const [error, setError] = useState('');
-  const [authFailed, setAuthFailed] = useState(false);
 
   const auth = useAuth();
   const navigate = useNavigate();
@@ -32,7 +30,6 @@ export default function SingupPage() {
         navigate('/');
       }
     } catch (e) {
-      setAuthFailed(true);
       if (e.response.data.statusCode === 409) {
         setError(t('This user already exists'));
         toast.error(t('This user already exists'), {

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, {
   useEffect, useState, useRef, useContext,
 } from 'react';
@@ -30,17 +29,17 @@ const getAuthHeader = () => {
   return {};
 };
 
+filter.loadDictionary('ru');
+filter.loadDictionary('en');
+
 function HomePage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  filter.loadDictionary('ru');
-  filter.loadDictionary('en');
   const { channels, currentChannelId } = useSelector((state) => state.channelsReducer);
   const { messages } = useSelector((state) => state.messagesReducer);
   const {
     userData, socket,
   } = useContext(AuthContext);
-  const [error, setError] = useState('');
   const [isAddOpen, setShowAddModal] = useState(false);
   const [isRenameOpen, setShowRenameModal] = useState(false);
   const [isRemoveOpen, setShowRemoveModal] = useState(false);
@@ -130,7 +129,6 @@ function HomePage() {
         dispatch(setMessages(data.messages));
         dispatch(setCurrentChannelId(1));
       } catch {
-        setError(t('Connection error'));
         toast.error(t('Connection error'), {
           position: 'top-right',
           autoClose: 5000,
@@ -145,7 +143,7 @@ function HomePage() {
     };
 
     fetchData();
-  }, []);
+  }, [dispatch, t]);
 
   const inputRef = useRef();
   useEffect(() => {
