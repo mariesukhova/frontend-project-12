@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import {
   Modal, Button,
 } from 'react-bootstrap';
@@ -9,6 +10,16 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
   const handleSubmit = () => {
     onChildFormSubmit(channelInfo);
     onClose();
+    toast.success(t('Channel removed!'), {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
   };
 
   const ref = useRef();

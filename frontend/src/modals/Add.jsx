@@ -1,12 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import _ from 'lodash';
 import { useFormik } from 'formik';
 import {
   Modal, FormGroup, Form, Button,
 } from 'react-bootstrap';
 import { object, string } from 'yup';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Add({ onClose, onChildFormSubmit }) {
   const { t } = useTranslation();
@@ -39,6 +41,16 @@ function Add({ onClose, onChildFormSubmit }) {
         removable: true,
       });
       onClose();
+      toast.success(t('Channel created!'), {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
     },
   });
 

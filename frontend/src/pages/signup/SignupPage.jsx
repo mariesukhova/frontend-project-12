@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import {
@@ -34,8 +35,28 @@ export default function SingupPage() {
       setAuthFailed(true);
       if (e.response.data.statusCode === 409) {
         setError(t('This user already exists'));
+        toast.error(t('This user already exists'), {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
       } else {
         setError(t('Connection error'));
+        toast.error(t('Connection error'), {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
       }
     }
   };
