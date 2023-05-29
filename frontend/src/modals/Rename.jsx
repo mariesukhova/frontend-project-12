@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import {
   Modal, FormGroup, Form, Button,
@@ -7,6 +8,7 @@ import {
 import { object, string } from 'yup';
 
 function Rename({ onClose, onChildFormSubmit, channelInfo }) {
+  const { t } = useTranslation();
   const { channels } = useSelector((state) => state.channelsReducer);
   const channelNames = channels.map((channel) => channel.name);
   const inputRef = useRef(null);
@@ -17,10 +19,10 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
 
   const validationSchema = object({
     name: string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле')
-      .notOneOf(channelNames, 'Должно быть уникальным'),
+      .min(3, t('From 3 to 20 characters'))
+      .max(20, t('From 3 to 20 characters'))
+      .required('Required field')
+      .notOneOf(channelNames, t('Must be unique')),
   });
 
   const f = useFormik({
@@ -55,11 +57,12 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
   return (
     <Modal show>
       <Modal.Header>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('Rename channel')}</Modal.Title>
         <Button type="button" className="btn-close" onClick={onClose} aria-label="Close" />
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={f.handleSubmit} ref={ref}>
+          <Form.Label htmlFor="text" visuallyHidden>{t('Channel name')}</Form.Label>
           <FormGroup>
             <Form.Control
               name="name"
@@ -72,14 +75,14 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
               required
             />
             <Form.Control.Feedback type="invalid">
-              { f.errors.name }
+              {t(f.errors.name) }
             </Form.Control.Feedback>
           </FormGroup>
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onClose}>Отменить</Button>
-        <Button variant="primary" onClick={f.handleSubmit}>Отправить</Button>
+        <Button variant="secondary" onClick={onClose}>{t('Cancel')}</Button>
+        <Button variant="primary" onClick={f.handleSubmit}>{t('Send')}</Button>
       </Modal.Footer>
     </Modal>
   );
