@@ -47,37 +47,38 @@ socket
     store.dispatch(removeChannel(data));
   });
 
-function AuthProvider({ children }) {
+const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem('userId') ?? false);
   const userData = JSON.parse(localStorage.getItem('userId'));
 
-  const logIn = () => setLoggedIn(true);
-  const logOut = () => {
-    localStorage.removeItem('userId');
-    setLoggedIn(false);
-  };
-
-  const memo = useMemo(() => ({
-    loggedIn, logIn, logOut, userData, socket,
-  }));
+  const memo = useMemo(() => {
+    const logIn = () => setLoggedIn(true);
+    const logOut = () => {
+      localStorage.removeItem('userId');
+      setLoggedIn(false);
+    };
+    return ({
+      loggedIn, logIn, logOut, userData, socket,
+    });
+  }, [loggedIn, userData]);
 
   return (
     <AuthContext.Provider value={memo}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-function PrivateRoute({ children }) {
+const PrivateRoute = ({ children }) => {
   const auth = useAuth();
   const location = useLocation();
 
   return (
     auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
   );
-}
+};
 
-function AuthButton() {
+const AuthButton = () => {
   const auth = useAuth();
   const { t } = useTranslation();
 
@@ -86,46 +87,44 @@ function AuthButton() {
       ? <Button type="button" className="btn btn-primary" onClick={auth.logOut}>{t('Logout')}</Button>
       : null
   );
-}
+};
 
-function App() {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <AuthProvider>
-          <div className="vh-100 bg-light">
-            <div className="h-100">
-              <div className="h-100" id="chat">
-                <div className="d-flex flex-column h-100">
-                  <Navbar expand="lg" bg="white" className="shadow-sm">
-                    <Container>
-                      <Navbar.Brand as={Link} to="/" className="custom-link">
-                        Hexlet Chat
-                      </Navbar.Brand>
-                      <AuthButton />
-                    </Container>
-                  </Navbar>
-                  <Routes>
-                    <Route
-                      path="/"
-                      element={(
-                        <PrivateRoute>
-                          <HomePage />
-                        </PrivateRoute>
+const App = () => (
+  <Provider store={store}>
+    <BrowserRouter>
+      <AuthProvider>
+        <div className="vh-100 bg-light">
+          <div className="h-100">
+            <div className="h-100" id="chat">
+              <div className="d-flex flex-column h-100">
+                <Navbar expand="lg" bg="white" className="shadow-sm">
+                  <Container>
+                    <Navbar.Brand as={Link} to="/" className="custom-link">
+                      Hexlet Chat
+                    </Navbar.Brand>
+                    <AuthButton />
+                  </Container>
+                </Navbar>
+                <Routes>
+                  <Route
+                    path="/"
+                    element={(
+                      <PrivateRoute>
+                        <HomePage />
+                      </PrivateRoute>
                     )}
-                    />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/signup" element={<SignupPage />} />
-                    <Route path="/*" element={<NotFoundPage />} />
-                  </Routes>
-                </div>
+                  />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/signup" element={<SignupPage />} />
+                  <Route path="/*" element={<NotFoundPage />} />
+                </Routes>
               </div>
             </div>
           </div>
-        </AuthProvider>
-      </BrowserRouter>
-    </Provider>
-  );
-}
+        </div>
+      </AuthProvider>
+    </BrowserRouter>
+  </Provider>
+);
 
 export default App;

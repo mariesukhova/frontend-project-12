@@ -10,7 +10,7 @@ import {
 import { object, string } from 'yup';
 import 'react-toastify/dist/ReactToastify.css';
 
-function Add({ onClose, onChildFormSubmit }) {
+const Add = ({ onClose, onChildFormSubmit }) => {
   const { t } = useTranslation();
   const { channels } = useSelector((state) => state.channelsReducer);
   const channelNames = channels.map((channel) => channel.name);
@@ -65,7 +65,7 @@ function Add({ onClose, onChildFormSubmit }) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [onClose]);
 
   return (
     <Modal show>
@@ -98,6 +98,6 @@ function Add({ onClose, onChildFormSubmit }) {
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default Add;

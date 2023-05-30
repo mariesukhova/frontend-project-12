@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 import { object, string } from 'yup';
 
-function Rename({ onClose, onChildFormSubmit, channelInfo }) {
+const Rename = ({ onClose, onChildFormSubmit, channelInfo }) => {
   const { t } = useTranslation();
   const { channels } = useSelector((state) => state.channelsReducer);
   const channelNames = channels.map((channel) => channel.name);
@@ -63,7 +63,7 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [onClose]);
 
   return (
     <Modal show>
@@ -73,18 +73,18 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={f.handleSubmit} ref={ref}>
-          <Form.Label htmlFor="text" visuallyHidden>{t('Channel name')}</Form.Label>
-          <FormGroup>
+          <FormGroup controlId="name">
             <Form.Control
               name="name"
-              aria-label="Новое сообщение"
-              className="form-control mb-4"
+              id="name"
+              type="text"
+              className="form-control mb-2"
               ref={inputRef}
               onChange={f.handleChange}
               value={f.values.name}
               isInvalid={f.errors.name}
-              required
             />
+            <Form.Label visuallyHidden>{t('Channel name')}</Form.Label>
             <Form.Control.Feedback type="invalid">
               {t(f.errors.name) }
             </Form.Control.Feedback>
@@ -97,6 +97,6 @@ function Rename({ onClose, onChildFormSubmit, channelInfo }) {
       </Modal.Footer>
     </Modal>
   );
-}
+};
 
 export default Rename;

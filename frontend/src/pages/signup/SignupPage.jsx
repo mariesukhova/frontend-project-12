@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -13,10 +12,9 @@ import useAuth from '../../hooks/index';
 import routes from '../../routes';
 import signupImg from './signupImg.jpg';
 
-export default function SingupPage() {
+const SingupPage = () => {
   const { t } = useTranslation();
   const [error, setError] = useState('');
-  const [authFailed, setAuthFailed] = useState(false);
 
   const auth = useAuth();
   const navigate = useNavigate();
@@ -32,7 +30,6 @@ export default function SingupPage() {
         navigate('/');
       }
     } catch (e) {
-      setAuthFailed(true);
       if (e.response.data.statusCode === 409) {
         setError(t('This user already exists'));
         toast.error(t('This user already exists'), {
@@ -63,12 +60,12 @@ export default function SingupPage() {
 
   const validationSchema = Yup.object({
     username: Yup.string()
+      .required(t('Required field'))
       .min(3, t('From 3 to 20 characters'))
-      .max(20, t('From 3 to 20 characters'))
-      .required(t('Required field')),
+      .max(20, t('From 3 to 20 characters')),
     password: Yup.string()
-      .min(6, t('At least 6 characters'))
-      .required(t('Required field')),
+      .required(t('Required field'))
+      .min(6, t('At least 6 characters')),
     passwordConfirmation: Yup.string()
       .required(t('Required field'))
       .oneOf([Yup.ref('password'), null], t('Passwords must match')),
@@ -95,6 +92,8 @@ export default function SingupPage() {
     inputRef.current.focus();
   }, []);
 
+  console.log(f);
+
   return (
     <Container fluid className="vh-100">
       <Row className="justify-content-center align-content-center h-100">
@@ -106,24 +105,26 @@ export default function SingupPage() {
               </div>
               <Form className="w-50" onSubmit={f.handleSubmit}>
                 <h1 className="text-center mb-4">{t('Registration')}</h1>
-                <FloatingLabel htmlFor="username" label={t('Username')} className="mb-4">
+                <FloatingLabel controlId="username" label={t('Username')} className="mb-4">
                   <Form.Control
                     name="username"
                     autoComplete="username"
                     type="text"
                     id="username"
-                    placeholder={t('Username')}
+                    placeholder="asd"
                     ref={inputRef}
                     onChange={f.handleChange}
+                    onBlur={f.handleBlur}
                     value={f.values.username}
-                    isInvalid={f.errors.username || error}
-                    required
+                    isInvalid={f.touched.username && (f.errors.username || error)}
                   />
-                  <Form.Control.Feedback type="invalid">
-                    {t(f.errors.username)}
-                  </Form.Control.Feedback>
+                  {f.touched.username && (
+                    <Form.Control.Feedback type="invalid" toolkit>
+                      {t(f.errors.username)}
+                    </Form.Control.Feedback>
+                  )}
                 </FloatingLabel>
-                <FloatingLabel htmlFor="password" label={t('Password')} className="mb-4">
+                <FloatingLabel controlId="password" label={t('Password')} className="mb-4">
                   <Form.Control
                     name="password"
                     autoComplete="password"
@@ -131,15 +132,17 @@ export default function SingupPage() {
                     id="password"
                     placeholder={t('Password')}
                     onChange={f.handleChange}
+                    onBlur={f.handleBlur}
                     value={f.values.password}
-                    isInvalid={f.errors.password || error}
-                    required
+                    isInvalid={f.touched.password && (f.errors.password || error)}
                   />
-                  <Form.Control.Feedback type="invalid">
+                  {f.touched.password && (
+                  <Form.Control.Feedback type="invalid" toolkit>
                     {t(f.errors.password)}
                   </Form.Control.Feedback>
+                  )}
                 </FloatingLabel>
-                <FloatingLabel htmlFor="passwordConfirmation" label={t('Confirm password')} className="mb-4">
+                <FloatingLabel controlId="passwordConfirmation" label={t('Confirm password')} className="mb-4">
                   <Form.Control
                     name="passwordConfirmation"
                     autoComplete="passwordConfirmation"
@@ -147,13 +150,17 @@ export default function SingupPage() {
                     id="passwordConfirmation"
                     placeholder={t('Confirm password')}
                     onChange={f.handleChange}
+                    onBlur={f.handleBlur}
                     value={f.values.passwordConfirmation}
-                    isInvalid={f.errors.passwordConfirmation || error}
-                    required
+                    isInvalid={
+                      f.touched.passwordConfirmation && (f.errors.passwordConfirmation || error)
+                    }
                   />
-                  <Form.Control.Feedback type="invalid">
+                  {f.touched.passwordConfirmation && (
+                  <Form.Control.Feedback type="invalid" toolkit>
                     {t(f.errors.passwordConfirmation)}
                   </Form.Control.Feedback>
+                  )}
                 </FloatingLabel>
                 { error ? <p className="text-danger">{error}</p> : null}
                 <Button type="submit" className="w-100 mb-3" variant="outline-primary">
@@ -166,4 +173,6 @@ export default function SingupPage() {
       </Row>
     </Container>
   );
-}
+};
+
+export default SingupPage;

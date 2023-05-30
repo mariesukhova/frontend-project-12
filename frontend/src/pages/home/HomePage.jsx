@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, {
   useEffect, useState, useRef, useContext,
 } from 'react';
@@ -30,16 +29,17 @@ const getAuthHeader = () => {
   return {};
 };
 
-function HomePage() {
+filter.loadDictionary('ru');
+filter.loadDictionary('en');
+
+const HomePage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  filter.loadDictionary('ru');
   const { channels, currentChannelId } = useSelector((state) => state.channelsReducer);
   const { messages } = useSelector((state) => state.messagesReducer);
   const {
     userData, socket,
   } = useContext(AuthContext);
-  const [error, setError] = useState('');
   const [isAddOpen, setShowAddModal] = useState(false);
   const [isRenameOpen, setShowRenameModal] = useState(false);
   const [isRemoveOpen, setShowRemoveModal] = useState(false);
@@ -79,8 +79,9 @@ function HomePage() {
               {channel.name}
             </Button>
 
-            <Dropdown.Toggle split variant={channel.id === currentChannelId ? 'secondary' : null} id="dropdown-split-basic" />
-
+            <Dropdown.Toggle split variant={channel.id === currentChannelId ? 'secondary' : null} id="dropdown-split-basic">
+              <span className="visually-hidden">Управление каналом</span>
+            </Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item onClick={() => handleRemoveClick(channel)}>{t('Remove channel')}</Dropdown.Item>
               <Dropdown.Item onClick={() => handleRenameClick(channel)}>
@@ -128,7 +129,6 @@ function HomePage() {
         dispatch(setMessages(data.messages));
         dispatch(setCurrentChannelId(1));
       } catch {
-        setError(t('Connection error'));
         toast.error(t('Connection error'), {
           position: 'top-right',
           autoClose: 5000,
@@ -143,7 +143,7 @@ function HomePage() {
     };
 
     fetchData();
-  }, []);
+  }, [dispatch, t]);
 
   const inputRef = useRef();
   useEffect(() => {
@@ -252,6 +252,6 @@ function HomePage() {
       {isRemoveOpen ? <Remove onChildFormSubmit={handleRemoveModalSubmit} onClose={() => handleCloseModal('remove')} channelInfo={modalInfo} /> : null}
     </>
   );
-}
+};
 
 export default HomePage;

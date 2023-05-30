@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';
 import notFoundImg from './notFoundImg.svg';
 
-function NotFoundPage() {
+const NotFoundPage = () => {
   const { t } = useTranslation();
   return (
     <Container>
@@ -22,6 +22,6 @@ function NotFoundPage() {
       </Row>
     </Container>
   );
-}
+};
 
 export default NotFoundPage;

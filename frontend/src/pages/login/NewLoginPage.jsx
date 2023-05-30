@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
@@ -12,8 +11,7 @@ import useAuth from '../../hooks/index';
 import routes from '../../routes';
 import loginImg from './loginImg.jpeg';
 
-export default function LoginPage() {
-  const [error, setError] = useState('');
+const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const { t } = useTranslation();
 
@@ -21,7 +19,6 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   const handleOnSubmit = async (values) => {
-    setError('');
     try {
       const response = await axios.post(routes.loginPath(), values);
       const obj = {};
@@ -32,7 +29,6 @@ export default function LoginPage() {
       navigate('/');
     } catch (e) {
       setAuthFailed(true);
-      setError(e);
       toast.error(t('Connection error'), {
         position: 'top-right',
         autoClose: 5000,
@@ -72,7 +68,7 @@ export default function LoginPage() {
               </Col>
               <Form className="col-12 col-md-6 mt-3 mt-md-0" onSubmit={f.handleSubmit}>
                 <h1 className="text-center mb-4">{t('Enter')}</h1>
-                <FloatingLabel htmlFor="username" label={t('Your nickname')} className="mb-4">
+                <FloatingLabel controlId="username" label={t('Your nickname')} className="mb-4">
                   <Form.Control
                     name="username"
                     autoComplete="username"
@@ -81,12 +77,12 @@ export default function LoginPage() {
                     placeholder={t('Your nickname')}
                     ref={inputRef}
                     onChange={f.handleChange}
+                    onBlur={f.handleBlur}
                     value={f.values.username}
                     isInvalid={authFailed}
-                    required
                   />
                 </FloatingLabel>
-                <FloatingLabel htmlFor="password" label={t('Password')} className="mb-4">
+                <FloatingLabel controlId="password" label={t('Password')} className="mb-4">
                   <Form.Control
                     name="password"
                     autoComplete="current-pasword"
@@ -96,7 +92,6 @@ export default function LoginPage() {
                     onChange={f.handleChange}
                     value={f.values.password}
                     isInvalid={authFailed}
-                    required
                   />
                   <Form.Control.Feedback type="invalid">{t('Not correct name or password')}</Form.Control.Feedback>
                 </FloatingLabel>
@@ -117,4 +112,6 @@ export default function LoginPage() {
       </Row>
     </Container>
   );
-}
+};
+
+export default LoginPage;

@@ -1,7 +1,6 @@
-/* eslint-disable import/extensions */
 import { useContext } from 'react';
 
-import authContext from '../contexts/index.jsx';
+import authContext from '../contexts';
 
 const useAuth = () => useContext(authContext);
 
