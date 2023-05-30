@@ -5,7 +5,7 @@
 
 Chat is a simplistic alternative to Slack chat - a real-time React/Redux application using axios, REST, websockets, React Hooks + Redux Toolkit + Formik
 
-[(deployed on railway.com)](https://js-react-developer-project-12-production-56e3.up.railway.app/)
+[(deployed on railway.com)](https://frontend-project-12-production-a68b.up.railway.app/) 
 
 ## Build
 
